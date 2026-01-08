@@ -4,8 +4,8 @@ from google.colab.patches import cv2_imshow
 img=cv2.imread('sky_striker.jpg',cv2.IMREAD_GRAYSCALE)
 cv2_imshow(img)
 
-sobel_x=cv2.Sobel(img,cv2.CV_64F,1,0,ksize=3)
-sobel_y=cv2.Sobel(img,cv2.CV_64F,0,1,ksize=3)
-sobel_com=cv2.magnitude(sobel_x,sobel_y)
-cv2_imshow(sobel_com)
+img_canny=cv2.Canny(img,100,200)
+cv2_imshow(img_canny)
+
+
 
