@@ -1,0 +1,8 @@
+import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+img=cv2.imread('anh_2.jpg',cv2.IMREAD_GRAYSCALE)
+cv2_imshow(img)
+#loc trung bình 
+img_blu=cv2.blur(img,(3,3))
+cv2_imshow(img_blu)
