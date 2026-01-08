@@ -3,6 +3,6 @@ import numpy as np
 from google.colab.patches import cv2_imshow
 img=cv2.imread('anh_3.jpg',cv2.IMREAD_GRAYSCALE)
 cv2_imshow(img)
-#loc trung bình
+#loc trung vị
 img_trung_vi=cv2.medianBlur(img,3)
 cv2_imshow(img_trung_vi)
