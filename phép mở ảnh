@@ -1,0 +1,8 @@
+import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+img=cv2.imread('anh_2.jpg',cv2.IMREAD_GRAYSCALE)
+cv2_imshow(img)
+kernel=np.ones((3,3),np.uint8)
+img_mo=cv2.morphologyEx(img,cv2.MORPH_OPEN,kernel)
+cv2_imshow(img_mo)
