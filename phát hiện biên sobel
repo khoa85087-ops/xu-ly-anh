@@ -1,11 +1,26 @@
+
 import cv2
 import numpy as np
-from google.colab.patches import cv2_imshow
-img=cv2.imread('anh_3.jpg',cv2.IMREAD_GRAYSCALE)
-cv2_imshow(img)
+import matplotlib.pyplot as plt
+# đọc ảnh
+img=cv2.imread('image_2.jpg')
+# chuyển từ BRG -->RGB
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+# chuyển từ RGB -->ẢNH XÁM
+img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2GRAY)
+# Plot sẽ tự tô màu nên cần  cmap sang gray
+plt.imshow(img_gray, cmap='gray')
+plt.axis("off")
+plt.show()
 
-sobel_x=cv2.Sobel(img,cv2.CV_64F,1,0,ksize=3)
-sobel_y=cv2.Sobel(img,cv2.CV_64F,0,1,ksize=3)
+
+# tạo ô lọc
+kernel=np.ones((3,3),np.uint8)
+# phát hiện biên sobel
+sobel_x=cv2.Sobel(img_gray,cv2.CV_64F,1,0,ksize=3)
+sobel_y=cv2.Sobel(img_gray,cv2.CV_64F,0,1,ksize=3)
 sobel_com=cv2.magnitude(sobel_x,sobel_y)
-cv2_imshow(sobel_com)
-
+# hiển thị sau lọc
+plt.imshow(sobel_com,cmap='gray')
+plt.axis("off")
+plt.show()
