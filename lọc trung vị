@@ -13,8 +13,6 @@ plt.axis("off")
 plt.show()
 
 
-# tạo ô lọc
-kernel=np.ones((3,3),np.uint8)
 # lọc trung vị
 img_trung_vi=cv2.medianBlur(img_gray,3)
 # hiển thị sau lọc
