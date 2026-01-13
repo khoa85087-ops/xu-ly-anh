@@ -7,7 +7,7 @@ img=cv2.imread('image.jpg')
 img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 # chuyển từ RGB -->ẢNH XÁM
 img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2GRAY)
-# Plot sẽ tự tô màu nên cần  cmap sang gray
+# hiển thị ảnh màu
 plt.imshow(img_rgb)
 plt.axis("off")
 plt.show()
