@@ -13,8 +13,7 @@ plt.axis("off")
 plt.show()
 
 
-# tạo ô lọc
-kernel=np.ones((3,3),np.uint8)
+
 # lọc gaussian
 img_gaussian=cv2.GaussianBlur(img_gray,(5,5),0)
 # hiển thị sau lọc
