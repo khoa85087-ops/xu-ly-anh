@@ -13,8 +13,7 @@ plt.axis("off")
 plt.show()
 
 
-# tạo ô lọc 
-kernel=np.ones((3,3),np.uint8)
+
 # phân ngưỡng thích nghi  
 img_phan_nguong=cv2.adaptiveThreshold(img_gray,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,11,2)
 # hiển thị sau lọc 
