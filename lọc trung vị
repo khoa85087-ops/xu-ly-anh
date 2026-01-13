@@ -8,7 +8,7 @@ img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 # chuyển từ RGB -->ẢNH XÁM
 img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2GRAY)
 # Plot sẽ tự tô màu nên cần  cmap sang gray
-plt.imshow(img_rgb, cmap='gray')
+plt.imshow(img_rgb)
 plt.axis("off")
 plt.show()
 
@@ -16,6 +16,6 @@ plt.show()
 # lọc trung vị
 img_trung_vi=cv2.medianBlur(img_rgb,3)
 # hiển thị sau lọc
-plt.imshow(img_trung_vi,cmap='gray')
+plt.imshow(img_trung_vi)
 plt.axis("off")
 plt.show()
