@@ -13,8 +13,7 @@ plt.axis("off")
 plt.show()
 
 
-# tạo ô lọc
-kernel=np.ones((3,3),np.uint8)
+
 # phát hiện biên canny
 img_canny=cv2.Canny(img_gray,100,200)
 # hiển thị sau lọc
