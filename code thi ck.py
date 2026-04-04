@@ -84,7 +84,7 @@ avg_loss_history = []
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
-# ===== TRAIN =====
+# train 
 for epoch in range(2):
     running_loss = 0.0
 
@@ -105,7 +105,7 @@ for epoch in range(2):
 
     print(f'Epoch {epoch + 1}, Loss: {avg_loss}')
 
-# ===== VẼ LOSS =====
+# vẽ đồ thị loss 
 plt.figure()
 plt.plot(avg_loss_history)
 plt.title('Average Loss per Epoch')
@@ -113,7 +113,7 @@ plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.show()
 
-# ===== TEST =====
+# kiểm tra 
 net.eval()
 
 predictions = []
@@ -128,7 +128,7 @@ with torch.no_grad():
         predictions.extend(predicted.numpy())
         true_labels.extend(labels.numpy())
 
-# ===== METRICS =====
+# đánh giá mô hình 
 conf_matrix = confusion_matrix(true_labels, predictions)
 accuracy = accuracy_score(true_labels, predictions)
 precision = precision_score(true_labels, predictions, average='macro')
@@ -139,7 +139,7 @@ print(f'Precision: {precision}')
 print(f'Recall: {recall}')
 print(f'Confusion Matrix:\n{conf_matrix}')
 
-# ===== SAVE MODEL =====
+# lưu mô hình 
 from google.colab import drive
 drive.mount('/content/drive')
 path_on_drive = '/content/drive/My Drive/cifar_net_khoa.pth'
