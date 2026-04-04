@@ -8,6 +8,7 @@ import os
 
 # ===== MODEL =====
 class SimpleCNN(nn.Module):
+    #đổi ở đây 
     def __init__(self):
         super().__init__()
         self.conv1 = nn.Conv2d(3, 32, 3, padding=1)
@@ -27,6 +28,7 @@ class SimpleCNN(nn.Module):
 
 # ===== LOAD MODEL =====
 net = SimpleCNN()
+# đổi ở đây 
 net.load_state_dict(torch.load("cifar_net_khoa.pth", map_location='cpu'))
 net.eval()
 
