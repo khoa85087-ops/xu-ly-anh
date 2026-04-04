@@ -1,4 +1,0 @@
-from google.colab import drive
-drive.mount('/content/drive')
-
-torch.save(model.state_dict(), "/content/drive/MyDrive/cnn_cifar10.pth")
