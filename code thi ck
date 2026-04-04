@@ -140,5 +140,7 @@ print(f'Recall: {recall}')
 print(f'Confusion Matrix:\n{conf_matrix}')
 
 # ===== SAVE MODEL =====
+from google.colab import drive
+drive.mount('/content/drive')
 path_on_drive = '/content/drive/My Drive/cifar_net_khoa.pth'
 torch.save(net.state_dict(), path_on_drive)
