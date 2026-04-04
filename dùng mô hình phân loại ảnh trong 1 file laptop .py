@@ -1,39 +1,34 @@
+#thay mô hình coppy cấu truc class ở phần train ,đồng thời đổi tên đường dẫn là xong 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torchvision import transforms
 from PIL import Image
 import os
-import random
-from torchvision import transforms
 
 # ===== MODEL =====
-class CNN(nn.Module):
+class SimpleCNN(nn.Module):
     def __init__(self):
         super().__init__()
-        self.conv1 = nn.Conv2d(3, 16, 3, padding=1)
-        self.conv2 = nn.Conv2d(16, 32, 3, padding=1)
-        self.conv3 = nn.Conv2d(32, 64, 3, padding=1)
-        self.pool = nn.MaxPool2d(2, 2)
-        self.fc1 = nn.Linear(64 * 4 * 4, 128)
-        self.fc2 = nn.Linear(128, 10)
+        self.conv1 = nn.Conv2d(3, 32, 3, padding=1)
+        self.conv2 = nn.Conv2d(32, 64, 3, padding=1)
+        self.conv3 = nn.Conv2d(64, 128, 3, padding=1)
+        self.fc1 = nn.Linear(2048, 512)
+        self.fc2 = nn.Linear(512, 10)
 
     def forward(self, x):
-        x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
-        x = self.pool(F.relu(self.conv3(x)))
-        x = x.view(-1, 64 * 4 * 4)
+        x = F.max_pool2d(F.relu(self.conv1(x)), 2)
+        x = F.max_pool2d(F.relu(self.conv2(x)), 2)
+        x = F.max_pool2d(F.relu(self.conv3(x)), 2)
+        x = x.view(-1, 2048)
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
         return x
 
 # ===== LOAD MODEL =====
-model = CNN()
-model.load_state_dict(torch.load("cnn_cifar10.pth", map_location="cpu"))
-model.eval()
-
-# ===== CLASS =====
-classes = ['airplane','automobile','bird','cat',
-           'deer','dog','frog','horse','ship','truck']
+net = SimpleCNN()
+net.load_state_dict(torch.load("cifar_net_khoa.pth", map_location='cpu'))
+net.eval()
 
 # ===== TRANSFORM =====
 transform = transforms.Compose([
@@ -42,27 +37,49 @@ transform = transforms.Compose([
     transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))
 ])
 
-# ===== RANDOM ẢNH =====
+# ===== CLASS =====
+classes = ['airplane','automobile','bird','cat','deer','dog','frog','horse','ship','truck']
+
+# ===== TEST =====
 folder = "cifar100"
-files = os.listdir(folder)
 
-img_name = random.choice(files)
-img_path = os.path.join(folder, img_name)
+correct = 0
+total = 0
 
-image = Image.open(img_path).convert("RGB")
-image = transform(image).unsqueeze(0)
+for file in os.listdir(folder):
+    if not file.endswith((".png", ".jpg", ".jpeg")):
+        continue
 
-# ===== PREDICT =====
-with torch.no_grad():
-    outputs = model(image)
-    _, predicted = torch.max(outputs, 1)
+    # ===== LẤY LABEL TỪ TÊN FILE =====
+    # ví dụ: 0_bird.png -> bird
+    true_label_name = file.split("_")[1].split(".")[0]
 
-print("Ảnh:", img_name)
-print("Dự đoán:", classes[predicted.item()])
+    if true_label_name not in classes:
+        continue
 
-input("Nhấn Enter để thoát...")
+    true_label = classes.index(true_label_name)
 
+    # ===== LOAD IMAGE =====
+    img_path = os.path.join(folder, file)
+    img = Image.open(img_path).convert('RGB')
+    img = transform(img).unsqueeze(0)
 
+    # ===== PREDICT =====
+    with torch.no_grad():
+        outputs = net(img)
+        probs = F.softmax(outputs, dim=1)
+        conf, predicted = torch.max(probs, 1)
 
+    pred_label = classes[predicted.item()]
 
+    print(f"{file} -> {pred_label} ({conf.item():.4f})")
 
+    # ===== ACCURACY =====
+    total += 1
+    if predicted.item() == true_label:
+        correct += 1
+
+# ===== RESULT =====
+acc = correct / total if total > 0 else 0
+print(f"\nAccuracy: {acc:.4f} ({correct}/{total})")
+input("Press Enter to exit...")
